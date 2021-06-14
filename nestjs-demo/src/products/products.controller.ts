@@ -1,20 +1,20 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { createProductDTO } from './dto/product.dto';
 import { Product } from './interface/product.interface';
 import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
-    constructor(public productService: ProductsService){}
+    constructor(public productService: ProductsService) { }
 
     @Post()
-    async create(@Body() product : createProductDTO): Promise<Product[]> {
-      return this.productService.create(product);
+    async create(@Body() product: createProductDTO): Promise<Product[]> {
+        return this.productService.create(product);
     }
 
     @Get()
-    findAll(): string {
-        return 'Find All';
+    async findAll(@Param() params): Promise<Product[]> {
+        return this.productService.findAll()
     }
 
     @Put()
@@ -22,13 +22,13 @@ export class ProductsController {
         return 'update endpoint';
     }
 
-    @Delete()
-    delete(): string {
-        return "delete endpoint id"
+    @Delete(':id')
+    async delete(@Param() params): Promise<Product[]> {
+        return this.productService.delete(params.id)
     }
 
     @Get(':id')
-    findOne(): string {
-        return "find one data"
+    async findOne(@Param() params): Promise<Product> {
+        return this.productService.findOne(params.id);
     }
 }
