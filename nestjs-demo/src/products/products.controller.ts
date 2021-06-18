@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, UseInterceptors } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 import { createProductDTO } from './dto/product.dto';
 import { Product } from './interface/product.interface';
 import { ProductsService } from './products.service';
 
 @Controller('products')
 @UseFilters(HttpExceptionFilter)
+@UseInterceptors(TransformInterceptor)
 export class ProductsController {
     constructor(public productService: ProductsService) { }
 
